@@ -1,19 +1,19 @@
 const Suspension = Symbol("Suspension");
 type Suspension<T> = { [Suspension]: () => T };
-const Value = Symbol("Value");
-type Value<T> = { [Value]: T };
+const Val = Symbol("Val");
+type Val<T> = { [Val]: T };
 const Exception = Symbol("Exception");
 type Exception = { [Exception]: Error };
 
 /**
  * A value of type 'Lazy<T> is a deferred computation, called a suspension, that
- * has a result of type T. Calling `Lazy<T>(() => Expr)` makes a suspension of
- * the computation of `Expr`, without computing `Expr` itself yet. "Forcing" the
- * suspension will then compute `Expr` and return its result.
+ * has a result of type T. Calling `Lazy<Expr>(() => Expr)` makes a suspension
+ * of the computation of `Expr`, without computing `Expr` itself yet. "Forcing"
+ * the suspension will then compute `Expr` and return its result.
  */
-type Lazy<T> = Suspension<T> | Value<T> | Exception;
+type Lazy<T> = Suspension<T> | Val<T> | Exception;
 
-function Lazy<Expr>(sus: () => Expr): Lazy<Expr> {
+function Lazy<T>(sus: () => T): Lazy<T> {
     return { [Suspension]: sus };
 }
 
@@ -44,18 +44,18 @@ module Lazy {
      * it. If it threw an error, the same error is thrown again.
      */
     export function force<T>(x: Lazy<T>): T {
-        if (is_val<T>(x)) return x[Value];
+        if (isVal<T>(x)) return x[Val];
         if (Exception in x) throw x[Exception];
         const a = x as any;
         if (Suspension in a) {
             try {
-                a[Value] = a[Suspension]();
+                a[Val] = a[Suspension]();
             } catch (e) {
                 a[Exception] = e;
             }
             delete a[Suspension];
             if (Exception in a) throw a[Exception];
-            return a[Value];
+            return a[Val];
         }
         a[Exception] = new Lazy.Undefined(
             "expected computation, but got a value",
@@ -71,16 +71,16 @@ module Lazy {
      * Returns `true` if the suspension has already been forced and did not
      * throw an error.
      */
-    export function is_val<T>(x: Lazy<T>): x is Value<T> {
-        return Value in x;
+    export function isVal<T>(x: Lazy<T>): x is Val<T> {
+        return Val in x;
     }
 
     /**
      * Evaluates `v` first (as any function would) and returns an already-forced
      * suspension of its result. It is the same as `const x = v; Lazy(() => x)`.
      */
-    export function from_val<T>(v: T): Lazy<T> {
-        return { [Value]: v };
+    export function fromVal<T>(v: T): Lazy<T> {
+        return { [Val]: v };
     }
 
     /**
@@ -92,14 +92,14 @@ module Lazy {
      * not be useful if you never force the function result.
      *
      * If `f` raises an exception, it will be raised immediately when
-     * `is_val(x)`, or raised only when forcing the thunk otherwise.
+     * `isVal(x)`, or raised only when forcing the thunk otherwise.
      *
-     * If `map_val(f, x)` does not raise an exception, then `is_val(map_val(f,
-     * x))` is equal to `is_val(x)`.
+     * If `mapVal(f, x)` does not raise an exception, then `isVal(mapVal(f,
+     * x))` is equal to `isVal(x)`.
      */
-    export function map_val<T, U>(f: (x: T) => U, x: Lazy<T>): Lazy<U> {
-        if (is_val(x)) {
-            return from_val(f(x[Value]));
+    export function mapVal<T, U>(f: (x: T) => U, x: Lazy<T>): Lazy<U> {
+        if (isVal(x)) {
+            return fromVal(f(x[Val]));
         }
         return Lazy(() => f(force(x)));
     }
