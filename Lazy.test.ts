@@ -82,10 +82,10 @@ describe("Lazy", () => {
 
     test("force throws the same exception for multiple invocations", () => {
         const x = Lazy(() => {
-            throw new Error("rats!");
+            throw new Error("test");
         });
-        expect(() => Lazy.force(x)).toThrowError("rats!");
-        expect(() => Lazy.force(x)).toThrowError("rats!");
+        expect(() => Lazy.force(x)).toThrowError("test");
+        expect(() => Lazy.force(x)).toThrowError("test");
     });
 
     test("is_val returns true for a forced value", () => {
@@ -108,13 +108,31 @@ describe("Lazy", () => {
         expect(Lazy.force(y)).toBe(70);
     });
 
-    test("map_val propagates exceptions immediately for a forced value", () => {
+    test("map_val propagates exceptions immediately only for a forced value", () => {
+        // forced val should throw
         const x = Lazy.from_val(70);
         expect(() => {
             return Lazy.map_val(() => {
-                throw new Error("rats!");
+                throw new Error("test");
             }, x);
-        }).toThrowError("rats!");
+        }).toThrowError("test");
+
+        // lazy val should not throw
+        const y = Lazy(() => 69);
+        expect(() => {
+            return Lazy.map_val(() => {
+                throw new Error("test");
+            }, y);
+        }).not.toThrowError("test");
+
+        // since y has now been forced, it should throw immediately
+        const val = Lazy.force(y);
+        expect(val).toBe(69);
+        expect(() => {
+            return Lazy.map_val(() => {
+                throw new Error("test");
+            }, y);
+        }).toThrowError("test");
     });
 
     test("is_val(map_val(f, x))` is equal to `is_val(x)`", () => {
