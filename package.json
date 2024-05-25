@@ -1,6 +1,5 @@
 {
-    "name": "lazy-ts",
-    "module": "index.ts",
+    "name": "@travvy/lazy",
     "type": "module",
     "devDependencies": {
         "@types/bun": "^1.1.3",
