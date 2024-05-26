@@ -101,57 +101,164 @@ try {
 
 ### Functional API
 
-```ts
-Lazy<T>(sus: () => T): Lazy<T>
-```
-======
-Creates a new lazy value.
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Lazy&lt;T&gt;(sus: () => T): Lazy&lt;T&gt;</code></td>
+      <td>Creates a new lazy value.</td>
+      <td>
+        <pre lang="ts">
+import Lazy from '@travvy/lazy/fp';
 
-#### `Lazy.force<T>(x: Lazy<T>): T`
-
-Forces the computation and returns its result.
-
-#### `Lazy.map<A, B>(f: (x: A) => B, x: Lazy<A>): Lazy<B>`
-
-Maps a function over a lazy value.
-
-#### `Lazy.isVal<T>(x: Lazy<T>): x is Val<T>`
-
-Checks if a lazy value has been evaluated.
-
-#### `Lazy.fromVal<T>(v: T): Lazy<T>`
-
-Creates a lazy value from an already-evaluated value.
-
-#### `Lazy.mapVal<T, U>(f: (x: T) => U, x: Lazy<T>): Lazy<U>`
-
-Maps a function over a lazy value if it has been evaluated.
+const lazyValue = Lazy(() => {
+  // Some expensive computation
+  return 42;
+});
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>Lazy.force&lt;T&gt;(x: Lazy&lt;T&gt;): T</code></td>
+      <td>Forces the computation and returns its result.</td>
+      <td>
+        <pre lang="ts">
+const result = Lazy.force(lazyValue);
+console.log(result); // 42
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>Lazy.map&lt;A, B&gt;(f: (x: A) => B, x: Lazy&lt;A&gt;): Lazy&lt;B&gt;</code></td>
+      <td>Maps a function over a lazy value.</td>
+      <td>
+        <pre lang="ts">
+const mappedValue = Lazy.map((x: number) => x * 2, lazyValue);
+const result = Lazy.force(mappedValue);
+console.log(result); // 84
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>Lazy.isVal&lt;T&gt;(x: Lazy&lt;T&gt;): x is Val&lt;T&gt;</code></td>
+      <td>Checks if a lazy value has been evaluated.</td>
+      <td>
+        <pre lang="ts">
+if (Lazy.isVal(lazyValue)) {
+  console.log('Value is already evaluated');
+}
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>Lazy.fromVal&lt;T&gt;(v: T): Lazy&lt;T&gt;</code></td>
+      <td>Creates a lazy value from an already-evaluated value.</td>
+      <td>
+        <pre lang="ts">
+const eagerValue = Lazy.fromVal(42);
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>Lazy.mapVal&lt;T, U&gt;(f: (x: T) => U, x: Lazy&lt;T&gt;): Lazy&lt;U&gt;</code></td>
+      <td>Maps a function over a lazy value if it has been evaluated.</td>
+      <td>
+        <pre lang="ts">
+const mappedVal = Lazy.mapVal((x: number) => x * 2, lazyValue);
+const result = Lazy.force(mappedVal);
+console.log(result); // 84
+        </pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Object-Oriented API
 
-#### `new Lazy<T>(sus: () => T)`
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>new Lazy&lt;T&gt;(sus: () => T)</code></td>
+      <td>Creates a new lazy instance.</td>
+      <td>
+        <pre lang="ts">
+import Lazy from '@travvy/lazy/oop';
 
-Creates a new lazy instance.
-
-#### `Lazy.prototype.force(): T`
-
-Forces the computation and returns its result.
-
-#### `Lazy.prototype.map<B>(f: (x: T) => B): Lazy<B>`
-
-Maps a function over a lazy instance.
-
-#### `Lazy.fromVal<T>(v: T): Lazy<T>`
-
-Creates a lazy instance from an already-evaluated value.
-
-#### `Lazy.from<T>(f: () => T): Lazy<T>`
-
-Creates a lazy instance from a function.
-
-#### `Lazy.prototype.mapVal<U>(f: (x: T) => U): Lazy<U>`
-
-Maps a function over a lazy instance if it has been evaluated.
+const lazyInstance = new Lazy(() => {
+  // Some expensive computation
+  return 42;
+});
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>Lazy.prototype.force(): T</code></td>
+      <td>Forces the computation and returns its result.</td>
+      <td>
+        <pre lang="ts">
+const result = lazyInstance.force();
+console.log(result); // 42
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>Lazy.prototype.map&lt;B&gt;(f: (x: T) => B): Lazy&lt;B&gt;</code></td>
+      <td>Maps a function over a lazy instance.</td>
+      <td>
+        <pre lang="ts">
+const mappedInstance = lazyInstance.map((x: number) => x * 2);
+const result = mappedInstance.force();
+console.log(result); // 84
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>Lazy.fromVal&lt;T&gt;(v: T): Lazy&lt;T&gt;</code></td>
+      <td>Creates a lazy instance from an already-evaluated value.</td>
+      <td>
+        <pre lang="ts">
+const eagerInstance = Lazy.fromVal(42);
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>Lazy.from&lt;T&gt;(f: () => T): Lazy&lt;T&gt;</code></td>
+      <td>Creates a lazy instance from a function.</td>
+      <td>
+        <pre lang="ts">
+const lazyInstanceFromFunc = Lazy.from(() => {
+  // Some expensive computation
+  return 42;
+});
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td><code>Lazy.prototype.mapVal&lt;U&gt;(f: (x: T) => U): Lazy&lt;U&gt;</code></td>
+      <td>Maps a function over a lazy instance if it has been evaluated.</td>
+      <td>
+        <pre lang="ts">
+const mappedInstanceVal = lazyInstance.mapVal((x: number) => x * 2);
+const result = mappedInstanceVal.force();
+console.log(result); // 84
+        </pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## Contributing
 
