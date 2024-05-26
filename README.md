@@ -23,7 +23,7 @@ npm install @travvy/lazy
 
 ### Functional API (default)
 
-The functional API is at `@travvy/lazy`.
+The default functional API is at `@travvy/lazy`.
 
 #### Creating a Lazy Value
 
@@ -53,7 +53,7 @@ console.log(result); // 138
 
 ### Object-Oriented API
 
-The object-oriented API is available in `@travvy/lazy/oop`.
+The object-oriented API is available at `@travvy/lazy/oop`.
 
 #### Creating a Lazy Instance
 
@@ -101,8 +101,10 @@ try {
 
 ### Functional API
 
-#### `Lazy<T>(sus: () => T): Lazy<T>`
-
+```ts
+Lazy<T>(sus: () => T): Lazy<T>
+```
+======
 Creates a new lazy value.
 
 #### `Lazy.force<T>(x: Lazy<T>): T`
