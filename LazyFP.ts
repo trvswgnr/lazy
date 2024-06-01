@@ -131,5 +131,3 @@ export module Lazy {
         return Lazy(() => f(force(x)));
     }
 }
-
-export default {}
