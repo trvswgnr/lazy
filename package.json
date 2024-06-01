@@ -1,5 +1,5 @@
 {
-    "name": "@travvy/lazy",
+    "name": "@trav/lazy",
     "type": "module",
     "devDependencies": {
         "@types/bun": "^1.1.3",
