@@ -1,4 +1,4 @@
-import Lazy from "./LazyOOP";
+import { Lazy } from "./LazyOOP";
 import { describe, test, expect } from "bun:test";
 
 const logger = () => {
@@ -59,14 +59,7 @@ describe("Lazy OOP", () => {
         expect(y.isVal()).toBe(true);
         log("y is val");
         const result = show_log(y.force());
-        expect(result).toEqual([
-            "force x",
-            "x",
-            "mapVal",
-            "y",
-            "y is val",
-            70,
-        ]);
+        expect(result).toEqual(["force x", "x", "mapVal", "y", "y is val", 70]);
     });
 
     test("force returns the same value for multiple invocations", () => {

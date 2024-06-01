@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import Lazy from "./LazyFP";
+import { Lazy } from "./LazyFP";
 
 const logger = () => {
     const logs: string[] = [];
@@ -59,14 +59,7 @@ describe("Lazy FP", () => {
         expect(Lazy.isVal(y)).toBe(true);
         log("y is val");
         const result = show_log(Lazy.force(y));
-        expect(result).toEqual([
-            "force x",
-            "x",
-            "mapVal",
-            "y",
-            "y is val",
-            70,
-        ]);
+        expect(result).toEqual(["force x", "x", "mapVal", "y", "y is val", 70]);
     });
 
     test("force returns the same value for multiple invocations", () => {
