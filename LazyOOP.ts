@@ -141,6 +141,9 @@ export interface Lazy<T> {
     mapVal<U>(f: (x: T) => U): Lazy<U>;
 }
 
+/**
+ * Static methods for the `Lazy` type, including the constructor function.
+ */
 export interface LazyConstructor {
     /**
      * Constructs a new suspension of the computation `f`.
