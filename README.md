@@ -1,268 +1,161 @@
 # Lazy
 
-Lazy is a TypeScript library for working with deferred computations, providing both functional and object-oriented APIs. This library is useful for optimizing performance by deferring expensive computations until their results are needed.
+Lazy is a TypeScript/JavaScript library for working with deferred computations,
+providing both functional and object-oriented APIs. This is particularly useful for optimizing
+performance by deferring expensive computations until their results are needed.
 
 ## Features
 
-- **Deferred Computations**: Create and manage deferred computations.
-- **Functional API**: Use functional constructs to work with lazy values.
-- **OOP API**: Use object-oriented constructs to work with lazy values.
-- **Exception Handling**: Safely handle exceptions that occur during deferred computations.
-- **Value Caching**: Cache the results of computations to avoid redundant executions.
-- **Flexible Mapping**: Map functions over lazy values to transform their results.
+-   **Deferred Computations**: Create and manage deferred computations.
+-   **Exception Handling**: Safely handle exceptions that occur during deferred computations.
+-   **Value Caching**: Cache the results of computations to avoid redundant executions.
+-   **Flexible Mapping**: Map functions over lazy values to transform their
+    results.
+-   **Functional and Object-Oriented APIs**: Use your preference between the functional API or the object-oriented API to work with lazy values.
 
 ## Installation
 
-Install the library using npm:
+Install the library using your preferred package manager:
 
 ```bash
-npm install @travvy/lazy
+# bun
+bunx jsr add @trav/lazy
+
+# npm
+npx jsr add @trav/lazy
+
+# deno
+deno add @trav/lazy
+
+# pnpm
+pnpm dlx jsr add @trav/lazy
+
+#yarn
+yarn dlx jsr add @trav/lazy
 ```
 
 ## Usage
 
 ### Functional API (default)
 
-The default functional API is at `@travvy/lazy`.
-
 #### Creating a Lazy Value
 
-```typescript
-import Lazy from '@travvy/lazy';
+```ts
+import { Lazy } from "@trav/lazy";
 
-const lazyValue = Lazy(() => {
-  // some expensive computation
-  return 69;
+const x = Lazy(() => {
+    // some expensive computation
+    // this will only execute once
+    return 69;
 });
 ```
 
 #### Forcing a Lazy Value
 
-```typescript
-const result = Lazy.force(lazyValue);
+```ts
+const result = Lazy.force(x);
 console.log(result); // 69
 ```
 
 #### Mapping a Function Over a Lazy Value
 
-```typescript
-const mappedValue = Lazy.map((x: number) => x * 2, lazyValue);
+```ts
+const mappedValue = Lazy.map((v) => v * 2, x);
 const result = Lazy.force(mappedValue);
 console.log(result); // 138
 ```
 
+You can also use `Lazy.mapVal` to map a function over a lazy value, which can be
+more efficient if `x` is already forced.
+
+```ts
+const mappedValue = Lazy.mapVal((v) => v * 2, x);
+const result = Lazy.force(mappedValue);
+console.log(result); // 138
+```
+
+#### Check if a Lazy value has already been forced
+
+```ts
+const hasBeenForced = Lazy.isValue(x);
+console.log(hasBeenForced); // true
+```
+
+#### Create a Lazy value from a regular value
+
+```ts
+const lazyFromValue = Lazy.fromValue(69);
+const hasBeenForced = Lazy.isValue(lazyFromValue);
+console.log(hasBeenForced); // true
+```
+
 ### Object-Oriented API
 
-The object-oriented API is available at `@travvy/lazy/oop`.
+The object-oriented API is available at `@trav/lazy/oop`.
 
 #### Creating a Lazy Instance
 
-```typescript
-import Lazy from '@travvy/lazy/oop';
+```ts
+import { Lazy } from "@trav/lazy/oop";
 
-const lazyInstance = new Lazy(() => {
-  // some expensive computation
-  return 69;
+const x = new Lazy(() => {
+    // some expensive computation
+    return 69;
 });
 ```
 
 #### Forcing a Lazy Instance
 
-```typescript
-const result = lazyInstance.force();
+```ts
+const result = x.force();
 console.log(result); // 69
 ```
 
 #### Mapping a Function Over a Lazy Instance
 
-```typescript
-const mappedInstance = lazyInstance.map((x: number) => x * 2);
+```ts
+const mappedInstance = x.map((x: number) => x * 2);
 const result = mappedInstance.force();
 console.log(result); // 138
 ```
 
+You can also use `Lazy.prototype.mapVal` to map a function over a lazy value, which can be
+more efficient if the current instance is already forced.
+
+```ts
+const mappedInstance = x.mapVal((v) => v * 2);
+const result = mappedInstance.force();
+console.log(result); // 138
+```
+
+#### Create a Lazy Instance from a regular value
+
+```ts
+const lazyFromValue = Lazy.fromVal(69);
+const hasBeenForced = Lazy.isValue(lazyFromValue);
+console.log(hasBeenForced); // true
+```
+
 ### Handling Exceptions
 
-Both APIs handle exceptions that occur during deferred computations.
+If a function throws an error, the same error is thrown when forcing the lazy
+value. This is the same in both the functional and object-oriented APIs.
 
-```typescript
-const faultyLazy = Lazy(() => {
-  throw new Error("Something went wrong");
+```ts
+const faulty = Lazy(() => {
+    throw new Error("Something went wrong");
 });
 
 try {
-  Lazy.force(faultyLazy);
+    Lazy.force(faulty);
 } catch (e) {
-  console.error(e); // Error: Something went wrong
+    console.error(e); // Error: Something went wrong
 }
 ```
 
-## API Reference
-
-### Functional API
-
-<table>
-  <thead>
-    <tr>
-      <th>Function</th>
-      <th>Description</th>
-      <th>Example</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Lazy&lt;T&gt;(sus: () => T): Lazy&lt;T&gt;</code></td>
-      <td>Creates a new lazy value.</td>
-      <td>
-        <pre lang="ts">
-import Lazy from '@travvy/lazy/fp';
-
-const lazyValue = Lazy(() => {
-  // Some expensive computation
-  return 42;
-});
-        </pre>
-      </td>
-    </tr>
-    <tr>
-      <td><code>Lazy.force&lt;T&gt;(x: Lazy&lt;T&gt;): T</code></td>
-      <td>Forces the computation and returns its result.</td>
-      <td>
-        <pre lang="ts">
-const result = Lazy.force(lazyValue);
-console.log(result); // 42
-        </pre>
-      </td>
-    </tr>
-    <tr>
-      <td><code>Lazy.map&lt;A, B&gt;(f: (x: A) => B, x: Lazy&lt;A&gt;): Lazy&lt;B&gt;</code></td>
-      <td>Maps a function over a lazy value.</td>
-      <td>
-        <pre lang="ts">
-const mappedValue = Lazy.map((x: number) => x * 2, lazyValue);
-const result = Lazy.force(mappedValue);
-console.log(result); // 84
-        </pre>
-      </td>
-    </tr>
-    <tr>
-      <td><code>Lazy.isVal&lt;T&gt;(x: Lazy&lt;T&gt;): x is Val&lt;T&gt;</code></td>
-      <td>Checks if a lazy value has been evaluated.</td>
-      <td>
-        <pre lang="ts">
-if (Lazy.isVal(lazyValue)) {
-  console.log('Value is already evaluated');
-}
-        </pre>
-      </td>
-    </tr>
-    <tr>
-      <td><code>Lazy.fromVal&lt;T&gt;(v: T): Lazy&lt;T&gt;</code></td>
-      <td>Creates a lazy value from an already-evaluated value.</td>
-      <td>
-        <pre lang="ts">
-const eagerValue = Lazy.fromVal(42);
-        </pre>
-      </td>
-    </tr>
-    <tr>
-      <td><code>Lazy.mapVal&lt;T, U&gt;(f: (x: T) => U, x: Lazy&lt;T&gt;): Lazy&lt;U&gt;</code></td>
-      <td>Maps a function over a lazy value if it has been evaluated.</td>
-      <td>
-        <pre lang="ts">
-const mappedVal = Lazy.mapVal((x: number) => x * 2, lazyValue);
-const result = Lazy.force(mappedVal);
-console.log(result); // 84
-        </pre>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-### Object-Oriented API
-
-<table>
-  <thead>
-    <tr>
-      <th>Function</th>
-      <th>Description</th>
-      <th>Example</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>new Lazy&lt;T&gt;(sus: () => T)</code></td>
-      <td>Creates a new lazy instance.</td>
-      <td>
-        <pre lang="ts">
-import Lazy from '@travvy/lazy/oop';
-
-const lazyInstance = new Lazy(() => {
-  // Some expensive computation
-  return 42;
-});
-        </pre>
-      </td>
-    </tr>
-    <tr>
-      <td><code>Lazy.prototype.force(): T</code></td>
-      <td>Forces the computation and returns its result.</td>
-      <td>
-        <pre lang="ts">
-const result = lazyInstance.force();
-console.log(result); // 42
-        </pre>
-      </td>
-    </tr>
-    <tr>
-      <td><code>Lazy.prototype.map&lt;B&gt;(f: (x: T) => B): Lazy&lt;B&gt;</code></td>
-      <td>Maps a function over a lazy instance.</td>
-      <td>
-        <pre lang="ts">
-const mappedInstance = lazyInstance.map((x: number) => x * 2);
-const result = mappedInstance.force();
-console.log(result); // 84
-        </pre>
-      </td>
-    </tr>
-    <tr>
-      <td><code>Lazy.fromVal&lt;T&gt;(v: T): Lazy&lt;T&gt;</code></td>
-      <td>Creates a lazy instance from an already-evaluated value.</td>
-      <td>
-        <pre lang="ts">
-const eagerInstance = Lazy.fromVal(42);
-        </pre>
-      </td>
-    </tr>
-    <tr>
-      <td><code>Lazy.from&lt;T&gt;(f: () => T): Lazy&lt;T&gt;</code></td>
-      <td>Creates a lazy instance from a function.</td>
-      <td>
-        <pre lang="ts">
-const lazyInstanceFromFunc = Lazy.from(() => {
-  // Some expensive computation
-  return 42;
-});
-        </pre>
-      </td>
-    </tr>
-    <tr>
-      <td><code>Lazy.prototype.mapVal&lt;U&gt;(f: (x: T) => U): Lazy&lt;U&gt;</code></td>
-      <td>Maps a function over a lazy instance if it has been evaluated.</td>
-      <td>
-        <pre lang="ts">
-const mappedInstanceVal = lazyInstance.mapVal((x: number) => x * 2);
-const result = mappedInstanceVal.force();
-console.log(result); // 84
-        </pre>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request on GitHub.
+Contributions are welcome! Please [open an issue](https://github.com/trvswgnr/lazy/issues) or [submit a pull request](https://github.com/trvswgnr/lazy/pulls).
 
 ## License
 
@@ -270,7 +163,9 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 
-For any questions or suggestions, please [open an issue](https://github.com/trvswgnr/lazy/issues).
+For any questions or suggestions, please [open an
+issue](https://github.com/trvswgnr/lazy/issues), or [reach out to me on
+Twitter](https://twitter.com/techsavvytravvy).
 
 ---
 
