@@ -1,3 +1,21 @@
+/**
+ * Deferred computations.
+ *
+ * Heavily inspired by OCaml's Lazy module, this module provides a way to defer
+ * computations until their result is needed, and then compute and return their
+ * result. This is useful when you want to avoid computing a computation unless
+ * its result is actually needed, or when you want to compute a computation in a
+ * different context.
+ *
+ * This is the FP version of the module, for the OOP version see `LazyOOP.ts`.
+ *
+ * @note `Lazy.force` is not concurrency-safe. If you use this module with
+ * multiple fibers, systhreads or domains, then you will need to add some locks.
+ * The module however ensures memory-safety, and hence, concurrently accessing
+ * this module will not lead to a crash but the behaviour is unspecified.
+ * @module
+ */
+
 const Suspension = Symbol("Suspension");
 type Suspension<T> = { [Suspension]: () => T };
 const Val = Symbol("Val");
@@ -11,10 +29,13 @@ type Exception = { [Exception]: Error };
  * of the computation of `Expr`, without computing `Expr` itself yet. "Forcing"
  * the suspension will then compute `Expr` and return its result.
  */
-type Lazy<T> = Suspension<T> | Val<T> | Exception;
+export type Lazy<T> = Suspension<T> | Val<T> | Exception;
 
-function Lazy<T>(sus: () => T): Lazy<T> {
-    return { [Suspension]: sus };
+/**
+ * Creates a new suspension of the computation `f`.
+ */
+export function Lazy<T>(f: () => T): Lazy<T> {
+    return { [Suspension]: f };
 }
 
 /**
@@ -25,7 +46,7 @@ function Lazy<T>(sus: () => T): Lazy<T> {
  * The module however ensures memory-safety, and hence, concurrently accessing
  * this module will not lead to a crash but the behaviour is unspecified.
  */
-module Lazy {
+export module Lazy {
     /**
      * Thrown when forcing a suspension concurrently from multiple fibers,
      * systhreads or domains, or when the suspension tries to force itself
@@ -63,6 +84,12 @@ module Lazy {
         throw a[Exception];
     }
 
+    /**
+     * Returns a suspension that, when forced, forces `x` and applies `f` to its
+     * value.
+     *
+     * It is equivalent to `Lazy(() => f(force(x)))`.
+     */
     export function map<A, B>(f: (x: A) => B, x: Lazy<A>): Lazy<B> {
         return Lazy(() => f(force(x)));
     }
@@ -94,8 +121,8 @@ module Lazy {
      * If `f` raises an exception, it will be raised immediately when
      * `isVal(x)`, or raised only when forcing the thunk otherwise.
      *
-     * If `mapVal(f, x)` does not raise an exception, then `isVal(mapVal(f,
-     * x))` is equal to `isVal(x)`.
+     * If `mapVal(f, x)` does not raise an exception, then `isVal(mapVal(f, x))`
+     * is equal to `isVal(x)`.
      */
     export function mapVal<T, U>(f: (x: T) => U, x: Lazy<T>): Lazy<U> {
         if (isVal(x)) {
@@ -105,4 +132,4 @@ module Lazy {
     }
 }
 
-export default Lazy;
+export default {}
