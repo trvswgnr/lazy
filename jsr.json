@@ -3,7 +3,7 @@
     "name": "@trav/lazy",
     "version": "0.0.2",
     "exports": {
-        ".": "./LazyFP.ts",
+        "./fp": "./LazyFP.ts",
         "./oop": "./LazyOOP.ts"
     }
 }

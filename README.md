@@ -36,12 +36,12 @@ yarn dlx jsr add @trav/lazy
 
 ## Usage
 
-### Functional API (default)
+### Functional API
 
 #### Creating a Lazy Value
 
 ```ts
-import { Lazy } from "@trav/lazy";
+import { Lazy } from "@trav/lazy/fp";
 
 const x = Lazy(() => {
     // some expensive computation
@@ -90,8 +90,6 @@ console.log(hasBeenForced); // true
 ```
 
 ### Object-Oriented API
-
-The object-oriented API is available at `@trav/lazy/oop`.
 
 #### Creating a Lazy Instance
 
