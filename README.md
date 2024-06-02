@@ -1,4 +1,5 @@
-# Lazy
+<h1 aria-label="Lazy TypeScript Library"><img src="https://github.com/trvswgnr/lazy/assets/8974888/d193debb-4fc8-4af3-924d-cbfc41727190" alt="Lazy TypeScript Library Banner - Illustration of a sloth lounging in an ornate wooden chair, wearing an oversized orange hoodie and matching pants. The background is blurred with cool blue and green tones, suggesting an overgrown indoor setting with columns or tall structures. Large, white, block letters at the bottom spell 'LAZY.' The sloth has a relaxed, almost regal posture, with its legs spread out and arms resting on the chair's armrests. Its expression appears content and unbothered."></h1>
+
 
 [![JSR](https://jsr.io/badges/@trav/lazy)](https://jsr.io/@trav/lazy) [![JSR
 Score](https://jsr.io/badges/@trav/lazy/score)](https://jsr.io/@trav/lazy)
