@@ -1,17 +1,25 @@
 # Lazy
 
-Lazy is a TypeScript/JavaScript library for working with deferred computations,
-providing both functional and object-oriented APIs. This is particularly useful for optimizing
-performance by deferring expensive computations until their results are needed.
+[![JSR](https://jsr.io/badges/@trav/lazy)](https://jsr.io/@trav/lazy) [![JSR
+Score](https://jsr.io/badges/@trav/lazy/score)](https://jsr.io/@trav/lazy)
+
+Lazy is a TypeScript/JavaScript library that makes it easy to work with lazy
+values. This is particularly useful for optimizing performance by deferring
+expensive computations until their results are needed, and only computing them
+once. Lazy provides both functional and object-oriented APIs—both of which have
+been tested extensively—so that you can integrate it into your project easily.
 
 ## Features
 
 -   **Deferred Computations**: Create and manage deferred computations.
--   **Exception Handling**: Safely handle exceptions that occur during deferred computations.
--   **Value Caching**: Cache the results of computations to avoid redundant executions.
+-   **Exception Handling**: Safely handle exceptions that occur during deferred
+    computations.
+-   **Value Caching**: Cache the results of computations to avoid redundant
+    executions.
 -   **Flexible Mapping**: Map functions over lazy values to transform their
     results.
--   **Functional and Object-Oriented APIs**: Use your preference between the functional API or the object-oriented API to work with lazy values.
+-   **Functional and Object-Oriented APIs**: Use your preference between the
+    functional API or the object-oriented API to work with lazy values.
 
 ## Installation
 
@@ -117,8 +125,8 @@ const result = mappedInstance.force();
 console.log(result); // 138
 ```
 
-You can also use `Lazy.prototype.mapVal` to map a function over a lazy value, which can be
-more efficient if the current instance is already forced.
+You can also use `Lazy.prototype.mapVal` to map a function over a lazy value,
+which can be more efficient if the current instance is already forced.
 
 ```ts
 const mappedInstance = x.mapVal((v) => v * 2);
@@ -153,11 +161,14 @@ try {
 
 ## Contributing
 
-Contributions are welcome! Please [open an issue](https://github.com/trvswgnr/lazy/issues) or [submit a pull request](https://github.com/trvswgnr/lazy/pulls).
+Contributions are welcome! Please [open an
+issue](https://github.com/trvswgnr/lazy/issues) or [submit a pull
+request](https://github.com/trvswgnr/lazy/pulls).
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file
+for details.
 
 ## Contact
 
