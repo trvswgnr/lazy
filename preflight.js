@@ -1,6 +1,6 @@
 // @ts-check
-const { readFileSync, writeFileSync } = require("fs");
-const { join } = require("path");
+import { readFileSync, writeFileSync } from "fs";
+import { join } from "path";
 
 /**
  * @type {PackageJson}
