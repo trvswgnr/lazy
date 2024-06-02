@@ -42,12 +42,12 @@ yarn dlx jsr add @trav/lazy
 
 ## Usage
 
-### Functional API
+### Functional API (default)
 
 #### Creating a Lazy Value
 
 ```ts
-import { Lazy } from "@trav/lazy/fp";
+import { Lazy } from "@trav/lazy";
 
 const x = Lazy(() => {
     // some expensive computation
