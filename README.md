@@ -12,8 +12,6 @@ been tested extensively—so that you can integrate it into your project easily.
 ## Features
 
 -   **Deferred Computations**: Create and manage deferred computations.
--   **Exception Handling**: Safely handle exceptions that occur during deferred
-    computations.
 -   **Value Caching**: Cache the results of computations to avoid redundant
     executions.
 -   **Flexible Mapping**: Map functions over lazy values to transform their
