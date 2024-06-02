@@ -1,13 +1,10 @@
 // @ts-check
 import { readFileSync, writeFileSync } from "fs";
-import { join } from "path";
 
 /**
  * @type {PackageJson}
  */
-const packageJson = JSON.parse(
-    readFileSync(join(__dirname, "../package.json"), "utf8"),
-);
+const packageJson = JSON.parse(readFileSync("./package.json", "utf8"));
 
 const SEMVER_REGEX =
     /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
@@ -25,10 +22,7 @@ packageJson.version = packageJson.version.replace(
     },
 );
 
-writeFileSync(
-    join(__dirname, "../package.json"),
-    JSON.stringify(packageJson, null, 2),
-);
+writeFileSync("./package.json", JSON.stringify(packageJson, null, 2));
 
 /**
  * @typedef {{
