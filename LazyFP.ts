@@ -1,21 +1,3 @@
-/**
- * Deferred computations.
- *
- * Heavily inspired by OCaml's Lazy module, this module provides a way to defer
- * computations until their result is needed, and then compute and return their
- * result. This is useful when you want to avoid computing a computation unless
- * its result is actually needed, or when you want to compute a computation in a
- * different context.
- *
- * This is the FP version of the module, for the OOP version see `LazyOOP.ts`.
- *
- * @note `Lazy.force` is not concurrency-safe. If you use this module with
- * multiple fibers, systhreads or domains, then you will need to add some locks.
- * The module however ensures memory-safety, and hence, concurrently accessing
- * this module will not lead to a crash but the behaviour is unspecified.
- * @module
- */
-
 const Suspension = Symbol("Suspension");
 type Suspension<T> = { [Suspension]: () => T };
 const Val = Symbol("Val");
