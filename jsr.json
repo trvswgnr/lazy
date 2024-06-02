@@ -1,9 +1,9 @@
 {
     "$schema": "https://jsr.io/schema/config-file.v1.json",
     "name": "@trav/lazy",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "exports": {
-        "./fp": "./LazyFP.ts",
+        ".": "./LazyFP.ts",
         "./oop": "./LazyOOP.ts"
     }
 }
